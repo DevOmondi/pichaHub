@@ -6,7 +6,8 @@
   font-family: var(--font-roboto);
 }
 
-h1 {
+h1,
+h2 {
   font-family: var(--font-raleway);
 }
 
@@ -74,6 +75,9 @@ h1 {
     @apply bg-background text-foreground;
   }
   .nav-link {
-    @apply text-gray-800 relative hover:text-gray-600 after:content-[''] after:absolute after:left-1/2 after:-translate-x-1/2 after:bottom-0 after:h-[2px] after:w-0 after:bg-[#8d39fa] after:transition-all after:duration-300 hover:after:w-full;
+    @apply text-gray-800 relative hover:text-gray-600 after:content-[''] after:absolute after:left-1/2 after:-translate-x-1/2 after:bottom-0 after:h-[2px] after:w-0 after:bg-primaryColor after:transition-all after:duration-300 hover:after:w-full;
+  }
+  .how-easy-section {
+    @apply w-full;
   }
 }

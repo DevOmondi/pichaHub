@@ -21,7 +21,7 @@ const Header = () => {
   }, []);
 
   return (
-    <div className="pt-6 w-[95%] lg:w-[85%] mx-auto">
+    <div className="pt-6 w-full md:w-[85%] mx-auto">
       <header
         className={`sticky top-6 z-50 mx-4 transition-all duration-300 rounded-md bg-slate-100 ${
           isScrolled

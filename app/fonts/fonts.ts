@@ -1,12 +1,12 @@
-import { Raleway, Roboto } from "next/font/google";
+import { Raleway, Poppins } from "next/font/google";
 
 export const raleway = Raleway({
-    subsets: ['latin'],
-    variable: "--font-raleway"
-})
+  subsets: ["latin"],
+  variable: "--font-raleway",
+});
 
-export const roboto = Roboto({
-    subsets: ['latin'],
-    weight: ['400'],
-    variable: "--font-roboto"
-})
+export const poppins = Poppins({
+  subsets: ["latin"],
+  weight: ["400"],
+  variable: "--font-poppins",
+});

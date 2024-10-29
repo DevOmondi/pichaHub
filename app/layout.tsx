@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import "./globals.css";
-import { raleway, roboto } from "./fonts/fonts";
+import { raleway, poppins } from "./fonts/fonts";
 
 import Layout from "@/Layout";
 
@@ -17,9 +17,9 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${raleway.variable} ${roboto.variable} antialiased`}
+      className={`${raleway.variable} ${poppins.variable} antialiased`}
     >
-      <body className={`${roboto.className}`}>
+      <body className={`${poppins.className}`}>
         <Layout>{children}</Layout>
       </body>
     </html>
