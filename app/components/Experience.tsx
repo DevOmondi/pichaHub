@@ -1,4 +1,6 @@
 import React from "react";
+import Link from "next/link";
+import { SignedOut } from "@clerk/nextjs";
 import { PrimaryButton } from "@/components/primary-button";
 
 const Experience = () => {
@@ -12,7 +14,12 @@ const Experience = () => {
           Organize, share, and relive your favorite moments seamlessly
         </p>
         <div className="items-center">
-          <PrimaryButton>Get Started</PrimaryButton>
+          <Link href="/sign-up">
+            {" "}
+            <SignedOut>
+              <PrimaryButton>Get Started</PrimaryButton>
+            </SignedOut>
+          </Link>
         </div>
       </div>
     </div>
