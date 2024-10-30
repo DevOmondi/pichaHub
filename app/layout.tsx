@@ -1,8 +1,12 @@
 import type { Metadata } from "next";
+import {
+  ClerkProvider,
+  // SignInButton,
+  // SignedIn,
+  // UserButton,
+} from "@clerk/nextjs";
 import "./globals.css";
 import { raleway, poppins } from "./fonts/fonts";
-
-import Layout from "@/Layout";
 
 export const metadata: Metadata = {
   title: "pichaHub | Discover, Organize, and Share Your Memories.",
@@ -15,13 +19,24 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html
-      lang="en"
-      className={`${raleway.variable} ${poppins.variable} antialiased`}
-    >
-      <body className={`${poppins.className}`}>
-        <Layout>{children}</Layout>
-      </body>
-    </html>
+    <ClerkProvider>
+      <html
+        lang="en"
+        className={`${raleway.variable} ${poppins.variable} antialiased`}
+      >
+        <body className={`${poppins.className}`}>
+          {" "}
+          {/* <header>
+            <SignedOut>
+              <SignInButton />
+            </SignedOut>
+            <SignedIn>
+              <UserButton />
+            </SignedIn>
+          </header> */}
+          {children}
+        </body>
+      </html>
+    </ClerkProvider>
   );
 }

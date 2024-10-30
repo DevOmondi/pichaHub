@@ -1,10 +1,13 @@
 import React from "react";
+import Header from "./Header";
 import { SecondaryButton } from "@/components/secondary-button";
 import Image from "next/image";
+import Link from "next/link";
 
 const Hero = () => {
   return (
-    <div className="flex flex-col items-center justify-center text-center py-[4rem] space-y-8">
+    <div className="flex flex-col items-center w-[95%] md:w-[85%] mx-auto justify-center text-center pb-[4rem] space-y-8">
+      <Header />
       <h1 className="font-bold text-4xl w-full lg:w-[50%] mx-auto">
         Your moments deserve more than storage—turn them into lasting memories.
       </h1>
@@ -12,7 +15,9 @@ const Hero = () => {
         Organize, share, and relive your favorite moments seamlessly
       </p>
       <div className="items-center">
-        <SecondaryButton>Get Started</SecondaryButton>
+        <Link href="/sign-up">
+          <SecondaryButton>Get Started</SecondaryButton>
+        </Link>
       </div>
       <div className="flex flex-col md:flex-row justify-between items-center w-[95%] md:w-[85%]">
         <Image

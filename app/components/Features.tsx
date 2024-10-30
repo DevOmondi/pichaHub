@@ -5,7 +5,7 @@ import Image from "next/image";
 
 const Features = () => {
   return (
-    <div className="my-[6rem] space-y-8">
+    <div className="my-[6rem] space-y-8 w-[95%] md:w-[85%] mx-auto">
       <div className="flex flex-col md:flex-row items-center gap-[4rem] md:gap-[12rem]">
         <div className="space-y-4 text-center md:text-left order-1 lg:order-2">
           <h2 className="font-bold text-3xl capitalize">

@@ -6,6 +6,7 @@ import { Menu, X } from "lucide-react";
 import { PrimaryButton } from "@/components/primary-button";
 import Image from "next/image";
 import Link from "next/link";
+import { SignedOut } from "@clerk/nextjs";
 
 const Header = () => {
   const [isScrolled, setIsScrolled] = useState(false);
@@ -23,7 +24,7 @@ const Header = () => {
   return (
     <div className="pt-6 w-full md:w-[85%] mx-auto">
       <header
-        className={`sticky top-6 z-50 mx-4 transition-all duration-300 rounded-md bg-slate-100 ${
+        className={`sticky top-0 z-50 mx-4 transition-all duration-300 rounded-md bg-slate-100 ${
           isScrolled
             ? "bg-white/70 backdrop-blur-md shadow-lg"
             : "bg-white/40 backdrop-blur-sm"
@@ -71,7 +72,7 @@ const Header = () => {
                 </li>
                 <li>
                   <a href="#" className="nav-link">
-                    Services
+                    Features
                   </a>
                 </li>
                 <li>
@@ -94,7 +95,11 @@ const Header = () => {
               </button>
             </div>
             <div className="md:block hidden">
-              <PrimaryButton>Sign In</PrimaryButton>
+              <Link href="/sign-in">
+                <SignedOut>
+                  <PrimaryButton>Sign In</PrimaryButton>
+                </SignedOut>
+              </Link>
             </div>
           </div>
         </div>
@@ -108,25 +113,34 @@ const Header = () => {
       >
         <nav className="bg-white/70 backdrop-blur-md mx-4 px-4 pt-2 pb-4 rounded-3xl shadow-lg">
           <ul className="space-y-2">
-            {["Home", "About", "Services", "Contact"].map((item, index) => (
+            {[
+              { title: "Home", route: "#" },
+              { title: "About", route: "#" },
+              { title: "Features", route: "#" },
+              { title: "Contact", route: "#" },
+            ].map((item, index) => (
               <li
-                key={item}
+                key={item.title}
                 className={`transform transition-all duration-300 delay-${index}`}
                 style={{
                   transitionDelay: `${index * 100}ms`,
                 }}
               >
                 <Link
-                  href="#"
+                  href={item.route}
                   className="block text-gray-800 hover:text-gray-600 py-2 px-4 rounded-lg hover:bg-gray-100 transition-colors duration-200"
                 >
-                  {item}
+                  {item.title}
                 </Link>
               </li>
             ))}
           </ul>
           <div className="mt-4">
-            <PrimaryButton>Sign In</PrimaryButton>
+            <Link href="/sign-in">
+              <SignedOut>
+                <PrimaryButton>Sign In</PrimaryButton>
+              </SignedOut>
+            </Link>
           </div>
         </nav>
       </div>

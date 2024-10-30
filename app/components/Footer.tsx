@@ -26,7 +26,7 @@ const Footer = () => {
       </div>
       <ul className="text-gray-400 mx-auto py-[2rem] flex flex-col md:flex-row gap-[3rem] justify-center">
         {["Features", "Get started", "About"].map((item, index) => (
-          <li key={index}>
+          <li key={index} className="hover:text-white">
             <Link href="#">{item}</Link>
           </li>
         ))}
