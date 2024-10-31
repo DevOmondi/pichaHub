@@ -124,7 +124,7 @@ const AlbumDetails = async ({ id }: { id: string }) => {
 export default async function AlbumPage({
   params,
 }: {
-  params: { id: string };
+  params: { id: string }
 }) {
   const { id } = await params;
   return (
