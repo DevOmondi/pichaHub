@@ -1,93 +1,98 @@
-"use client";
-
-import React from "react";
-import { SignedIn, UserButton } from "@clerk/nextjs";
-import { useState } from "react";
-import { TabList, TabGroup, Tab } from "@headlessui/react";
-import { Menu, X, Home, Users, Image, Camera } from "lucide-react";
 import Link from "next/link";
+import { Suspense } from "react";
+import Loading from "./components/ui/Loading";
+import { User, Album } from "lucide-react";
 
-const Welcome = () => {
-  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+import HomeNav from "./components/ui/HomeNav";
 
-  const navItems = [
-    { name: "Home", href: "/", icon: Home },
-    { name: "Users", href: "/users", icon: Users },
-    { name: "Album", href: "/album", icon: Image },
-    { name: "Photo", href: "/photo", icon: Camera },
-  ];
+async function getUsers() {
+  const res = await fetch("https://jsonplaceholder.typicode.com/users");
+  if (!res.ok) throw new Error("Failed to fetch users");
+  return res.json();
+}
+
+async function getAlbums() {
+  const res = await fetch("https://jsonplaceholder.typicode.com/albums");
+  if (!res.ok) throw new Error("Failed to fetch albums");
+  return res.json();
+}
+
+const UsersList = async () => {
+  const [users, albums] = await Promise.all([getUsers(), getAlbums()]);
+
+  const userAlbumCounts = albums.reduce((acc, album) => {
+    acc[album.userId] = (acc[album.userId] || 0) + 1;
+    return acc;
+  }, {});
 
   return (
-    <div>
-      <nav className="bg-white shadow-md">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex justify-between h-16">
-            <div className="flex">
-              <div className="flex-shrink-0 flex items-center">
-                {/* <span className="text-2xl font-bold text-indigo-600">Logo</span> */}
-                <SignedIn>
-                  <UserButton />
-                </SignedIn>
+    <div className="bg-white shadow overflow-hidden sm:rounded-md">
+      <ul className="divide-y divide-gray-200">
+        {users?.map((user) => (
+          <li key={user.id}>
+            <Link
+              href={`/home/user/${user.id}`}
+              className="block hover:bg-gray-50"
+            >
+              <div className="px-4 py-4 sm:px-6">
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center">
+                    <User
+                      className="h-6 w-6 text-gray-400 mr-3"
+                      aria-hidden="true"
+                    />
+                    <p className="text-sm font-medium text-primaryColor truncate">
+                      {user.name}
+                    </p>
+                  </div>
+                  <div className="flex items-center">
+                    <Album
+                      className="h-5 w-5 text-gray-400 mr-2"
+                      aria-hidden="true"
+                    />
+                    <p className="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">
+                      {userAlbumCounts[user.id] || 0} albums
+                    </p>
+                  </div>
+                </div>
+                <div className="mt-2 sm:flex sm:justify-between">
+                  <div className="sm:flex">
+                    <p className="flex items-center text-sm text-gray-500">
+                      @{user.username}
+                    </p>
+                  </div>
+                  <div className="mt-2 flex items-center text-sm text-gray-500 sm:mt-0">
+                    <p>{user.email}</p>
+                  </div>
+                </div>
               </div>
-              <div className="hidden sm:ml-6 sm:flex sm:space-x-8">
-                {navItems.map((item) => (
-                  <Link
-                    key={item.name}
-                    href={item.href}
-                    className="inline-flex items-center px-1 pt-1 border-b-2 border-transparent text-sm font-medium text-gray-500 hover:border-gray-300 hover:text-gray-700"
-                  >
-                    {item.name}
-                  </Link>
-                ))}
-              </div>
-            </div>
-            <div className="-mr-2 flex items-center sm:hidden">
-              <button
-                onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-                className="inline-flex items-center justify-center p-2 rounded-md text-gray-400 hover:text-gray-500 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-indigo-500"
-              >
-                <span className="sr-only">Open main menu</span>
-                {isMobileMenuOpen ? (
-                  <X className="block h-6 w-6" aria-hidden="true" />
-                ) : (
-                  <Menu className="block h-6 w-6" aria-hidden="true" />
-                )}
-              </button>
-            </div>
-          </div>
-        </div>
-
-        <div className={`sm:hidden ${isMobileMenuOpen ? "block" : "hidden"}`}>
-          <div className="pt-2 pb-3 space-y-1">
-            <TabGroup>
-              <TabList className="flex space-x-1 rounded-xl bg-indigo-900/20 p-1">
-                {navItems.map((item) => (
-                  <Tab
-                    key={item.name}
-                    className={({ selected }) =>
-                      `w-full rounded-lg py-2.5 text-sm font-medium leading-5 text-indigo-700 ring-white ring-opacity-60 ring-offset-2 ring-offset-indigo-400 focus:outline-none focus:ring-2 ${
-                        selected
-                          ? "bg-white shadow"
-                          : "text-indigo-100 hover:bg-white/[0.12] hover:text-white"
-                      }`
-                    }
-                  >
-                    <Link
-                      href={item.href}
-                      className="flex items-center justify-center"
-                    >
-                      <item.icon className="w-5 h-5 mr-2" />
-                      {item.name}
-                    </Link>
-                  </Tab>
-                ))}
-              </TabList>
-            </TabGroup>
-          </div>
-        </div>
-      </nav>
+            </Link>
+          </li>
+        ))}
+      </ul>
     </div>
   );
 };
 
-export default Welcome;
+// Main HomePage component
+const HomePage = async () => {
+  return (
+    <>
+      <HomeNav />
+      <div className="p-4">
+        <main className="min-h-screen bg-gray-100 py-12 px-4 sm:px-6 lg:px-8">
+          <div className="max-w-4xl mx-auto">
+            <h1 className="text-3xl font-bold text-gray-900 mb-8">
+              User Album List
+            </h1>
+            <Suspense fallback={<Loading />}>
+              <UsersList />
+            </Suspense>
+          </div>
+        </main>
+      </div>
+    </>
+  );
+};
+
+export default HomePage;

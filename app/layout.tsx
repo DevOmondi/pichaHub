@@ -24,18 +24,7 @@ export default function RootLayout({
         lang="en"
         className={`${raleway.variable} ${poppins.variable} antialiased`}
       >
-        <body className={`${poppins.className}`}>
-          {" "}
-          {/* <header>
-            <SignedOut>
-              <SignInButton />
-            </SignedOut>
-            <SignedIn>
-              <UserButton />
-            </SignedIn>
-          </header> */}
-          {children}
-        </body>
+        <body className={`${poppins.className}`}> {children}</body>
       </html>
     </ClerkProvider>
   );
