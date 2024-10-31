@@ -4,23 +4,31 @@ import { notFound } from "next/navigation";
 import { Album, User, Camera } from "lucide-react";
 import { Suspense } from "react";
 import Loading from "./components/Loading";
+import HomeNav from "../../components/ui/HomeNav";
 
 async function getAlbum(id: string) {
-  const res = await fetch(`https://jsonplaceholder.typicode.com/albums/${id}`);
+  const res = await fetch(`https://jsonplaceholder.typicode.com/albums/${id}`, {
+    next: { revalidate: 3600 },
+  });
   if (!res.ok) return undefined;
   return res.json();
 }
 
 async function getAlbumPhotos(id: string) {
   const res = await fetch(
-    `https://jsonplaceholder.typicode.com/albums/${id}/photos`
+    `https://jsonplaceholder.typicode.com/albums/${id}/photos`,
+    {
+      next: { revalidate: 3600 },
+    }
   );
   if (!res.ok) throw new Error("Failed to fetch album photos");
   return res.json();
 }
 
 async function getUser(id: string) {
-  const res = await fetch(`https://jsonplaceholder.typicode.com/users/${id}`);
+  const res = await fetch(`https://jsonplaceholder.typicode.com/users/${id}`, {
+    next: { revalidate: 3600 },
+  });
   if (!res.ok) throw new Error("Failed to fetch user");
   return res.json();
 }
@@ -78,21 +86,23 @@ const AlbumDetails = async ({ id }: { id: string }) => {
       <h2 className="text-2xl font-bold text-gray-900 mb-4">Photos</h2>
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
         {photos.map((photo) => (
-          <div
-            key={photo.id}
-            className="bg-white rounded-lg shadow-md overflow-hidden"
-          >
-            <Image
-              src={photo.thumbnailUrl}
-              alt={photo.title}
-              width={150}
-              height={150}
-              className="w-full h-40 object-cover"
-            />
-            <div className="p-4">
-              <p className="text-sm text-gray-700 truncate">{photo.title}</p>
+          <Link href={`/home/photo/${photo.id}`} key={photo.id}>
+            <div
+              // key={photo.id}
+              className="bg-white rounded-lg shadow-md overflow-hidden"
+            >
+              <Image
+                src={photo.thumbnailUrl}
+                alt={photo.title}
+                width={150}
+                height={150}
+                className="w-full h-40 object-cover"
+              />
+              <div className="p-4">
+                <p className="text-sm text-gray-700 truncate">{photo.title}</p>
+              </div>
             </div>
-          </div>
+          </Link>
         ))}
       </div>
 
@@ -116,12 +126,15 @@ export default async function AlbumPage({
 }) {
   const { id } = await params;
   return (
-    <div className="min-h-screen bg-gray-100 py-12 px-4 sm:px-6 lg:px-8">
-      <div className="max-w-6xl mx-auto">
-        <Suspense fallback={<Loading />}>
-          <AlbumDetails id={id} />
-        </Suspense>
+    <>
+      <HomeNav />
+      <div className="min-h-screen bg-gray-100 py-12 px-4 sm:px-6 lg:px-8">
+        <div className="max-w-6xl mx-auto">
+          <Suspense fallback={<Loading />}>
+            <AlbumDetails id={id} />
+          </Suspense>
+        </div>
       </div>
-    </div>
+    </>
   );
 }

@@ -1,11 +1,14 @@
 import Image from "next/image";
 import { notFound } from "next/navigation";
 import { Camera, User, Album } from "lucide-react";
-// import EditPhotoTitle from './edit-photo-title'
+import { Suspense } from "react";
+import HomeNav from "../../components/ui/HomeNav";
+import Loading from "./components/Loading";
+import EditPhotoTitle from "./components/EditPhotoTitle";
 
 async function getPhoto(id: string) {
   const res = await fetch(`https://jsonplaceholder.typicode.com/photos/${id}`, {
-    cache: "no-store",
+    next: { revalidate: 60 },
   });
   if (!res.ok) return undefined;
   return res.json();
@@ -13,7 +16,7 @@ async function getPhoto(id: string) {
 
 async function getAlbum(id: string) {
   const res = await fetch(`https://jsonplaceholder.typicode.com/albums/${id}`, {
-    cache: "no-store",
+    next: { revalidate: 3600 },
   });
   if (!res.ok) throw new Error("Failed to fetch album");
   return res.json();
@@ -21,18 +24,13 @@ async function getAlbum(id: string) {
 
 async function getUser(id: string) {
   const res = await fetch(`https://jsonplaceholder.typicode.com/users/${id}`, {
-    cache: "no-store",
+    next: { revalidate: 3600 },
   });
   if (!res.ok) throw new Error("Failed to fetch user");
   return res.json();
 }
 
-export default async function PhotoPage({
-  params,
-}: {
-  params: { id: string };
-}) {
-  const { id } = await params;
+async function PhotoDetails({ id }: { id: string }) {
   const photo = await getPhoto(id);
 
   if (!photo) {
@@ -65,8 +63,11 @@ export default async function PhotoPage({
                   height={600}
                   className="w-full h-auto rounded-lg shadow-lg"
                 />
+                <EditPhotoTitle initialTitle={photo.title} photoId={photo.id} />
               </div>
-              {/* <EditPhotoTitle initialTitle={photo.title} photoId={photo.id} /> */}
+              <h2 className="text-xl font-semibold text-gray-900 mb-4">
+                {photo.title}
+              </h2>
               <dl className="mt-6 grid grid-cols-1 gap-x-4 gap-y-8 sm:grid-cols-2">
                 <div className="sm:col-span-1">
                   <dt className="text-sm font-medium text-gray-500 flex items-center">
@@ -94,5 +95,21 @@ export default async function PhotoPage({
         </div>
       </div>
     </div>
+  );
+}
+
+export default async function PhotoPage({
+  params,
+}: {
+  params: { id: string };
+}) {
+  const { id } = await params;
+  return (
+    <>
+      <HomeNav />
+      <Suspense fallback={<Loading />}>
+        <PhotoDetails id={id} />
+      </Suspense>
+    </>
   );
 }
