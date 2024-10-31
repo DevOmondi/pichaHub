@@ -15,7 +15,7 @@ const HowEasy = () => {
         className="mx-auto rounded-lg -pt-24"
       />
       </div>
-      <p>Over here</p>
+      {/* <p>Over here</p> */}
     </div>
   );
 };

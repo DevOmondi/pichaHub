@@ -3,16 +3,22 @@ import Link from "next/link";
 import { User, Mail, Phone, Globe, Album } from "lucide-react";
 import { Suspense } from "react";
 import Loading from "./components/Loading";
+import HomeNav from "../../components/ui/HomeNav";
 
 async function getUser(id: string) {
-  const res = await fetch(`https://jsonplaceholder.typicode.com/users/${id}`);
+  const res = await fetch(`https://jsonplaceholder.typicode.com/users/${id}`, {
+    next: { revalidate: 3600 },
+  });
   if (!res.ok) return undefined;
   return res.json();
 }
 
 async function getUserAlbums(id: string) {
   const res = await fetch(
-    `https://jsonplaceholder.typicode.com/users/${id}/albums`
+    `https://jsonplaceholder.typicode.com/users/${id}/albums`,
+    {
+      next: { revalidate: 3600 },
+    }
   );
   if (!res.ok) throw new Error("Failed to fetch user albums");
   return res.json();
@@ -119,12 +125,15 @@ const UserDetails = async ({ id }: { id: string }) => {
 export default async function UserPage({ params }: { params: { id: string } }) {
   const { id } = await params;
   return (
-    <div className="min-h-screen bg-gray-100 py-12 px-4 sm:px-6 lg:px-8">
-      <div className="max-w-3xl mx-auto">
-        <Suspense fallback={<Loading />}>
-          <UserDetails id={id} />
-        </Suspense>
+    <>
+      <HomeNav />
+      <div className="min-h-screen bg-gray-100 py-12 px-4 sm:px-6 lg:px-8">
+        <div className="max-w-3xl mx-auto">
+          <Suspense fallback={<Loading />}>
+            <UserDetails id={id} />
+          </Suspense>
+        </div>
       </div>
-    </div>
+    </>
   );
 }

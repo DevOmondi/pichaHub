@@ -6,13 +6,17 @@ import { User, Album } from "lucide-react";
 import HomeNav from "./components/ui/HomeNav";
 
 async function getUsers() {
-  const res = await fetch("https://jsonplaceholder.typicode.com/users");
+  const res = await fetch("https://jsonplaceholder.typicode.com/users", {
+    next: { revalidate: 3600 },
+  });
   if (!res.ok) throw new Error("Failed to fetch users");
   return res.json();
 }
 
 async function getAlbums() {
-  const res = await fetch("https://jsonplaceholder.typicode.com/albums");
+  const res = await fetch("https://jsonplaceholder.typicode.com/albums", {
+    next: { revalidate: 3600 },
+  });
   if (!res.ok) throw new Error("Failed to fetch albums");
   return res.json();
 }
