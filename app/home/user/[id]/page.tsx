@@ -125,7 +125,7 @@ const UserDetails = async ({ id }: { id: string }) => {
 
 // Main page component
 export default async function UserPage({ params }: { params: { id: string } }) {
-  const { id } = await params;
+  const { id } =  params;
   return (
     <>
       <HomeNav />
