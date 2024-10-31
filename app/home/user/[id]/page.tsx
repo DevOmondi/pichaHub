@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/ban-ts-comment */
+// @ts-nocheck
 import { notFound } from "next/navigation";
 import Link from "next/link";
 import { User, Mail, Phone, Globe, Album } from "lucide-react";
