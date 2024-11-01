@@ -1,5 +1,4 @@
-/* eslint-disable @typescript-eslint/ban-ts-comment */
-// @ts-nocheck
+
 import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
@@ -110,7 +109,7 @@ const AlbumDetails = async ({ id }: { id: string }) => {
 
       <div className="mt-8">
         <Link
-          href="/user"
+          href={`/home/user/${user.id}`}
           className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-primaryColor hover:bg-primaryColor-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primaryColor-500"
         >
           Back to Albums
@@ -126,7 +125,7 @@ export default async function AlbumPage({
 }: {
   params: { id: string };
 }) {
-  const { id } = params;
+  const { id } = await params;
   return (
     <>
       <HomeNav />

@@ -1,5 +1,3 @@
-/* eslint-disable @typescript-eslint/ban-ts-comment */
-// @ts-nocheck
 import { notFound } from "next/navigation";
 import Link from "next/link";
 import { User, Mail, Phone, Globe, Album } from "lucide-react";
@@ -125,7 +123,7 @@ const UserDetails = async ({ id }: { id: string }) => {
 
 // Main page component
 export default async function UserPage({ params }: { params: { id: string } }) {
-  const { id } =  params;
+  const { id } = await params;
   return (
     <>
       <HomeNav />
