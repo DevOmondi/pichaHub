@@ -1,5 +1,3 @@
-/* eslint-disable @typescript-eslint/ban-ts-comment */
-// @ts-nocheck
 import Link from "next/link";
 import { Suspense } from "react";
 import Loading from "./components/ui/Loading";

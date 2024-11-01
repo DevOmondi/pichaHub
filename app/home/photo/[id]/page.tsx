@@ -1,4 +1,5 @@
 import Image from "next/image";
+import Link from "next/link";
 import { notFound } from "next/navigation";
 import { Camera, User, Album } from "lucide-react";
 import { Suspense } from "react";
@@ -94,6 +95,14 @@ async function PhotoDetails({ id }: { id: string }) {
           </div>
         </div>
       </div>
+      <div className="mt-8 justify-center">
+        <Link
+          href={`/home/album/${user.id}`}
+          className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-primaryColor hover:bg-primaryColor-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primaryColor-500"
+        >
+          Back to Albums
+        </Link>
+      </div>
     </div>
   );
 }
@@ -103,7 +112,7 @@ export default async function PhotoPage({
 }: {
   params: { id: string };
 }) {
-  const { id } = params;
+  const { id } = await params;
   return (
     <>
       <HomeNav />
